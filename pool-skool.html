@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Pool Skool | Clearview Pools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00B4D8",
+                        "primary-container": "#90e0ef",
+                        "on-primary": "#ffffff",
+                        "secondary": "#006479",
+                        "secondary-container": "#caf0f8",
+                        "tertiary": "#48cae4",
+                        "surface": "#eff8fe",
+                        "on-surface": "#273034",
+                        "surface-variant": "#c8d7df",
+                        "on-surface-variant": "#404850",
+                        "outline": "#707881",
+                        "background": "#f6fafe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "2rem",
+                        "lg": "2.5rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .bubble-shadow {
+            box-shadow: 0 30px 60px rgba(0, 100, 121, 0.2);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(0, 100, 121, 0.4), rgba(0, 180, 216, 0.2), transparent);
+        }
+    </style>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://pddrwxvauofsnchcmodn.supabase.co';
+        const supabaseKey = 'sb_publishable_w_x9uuDPvOxYBpEr8Q4k6Q_ZHNAbMuX';
+        // Renamed to supabaseClient to avoid collision with the library global 'supabase'
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+</head>
+
+<body class="bg-background font-body text-on-surface selection:bg-primary/30 min-h-screen flex flex-col">
+    <!-- Immediate Diagnostic Banner -->
+    <div id="connection-status" class="bg-black text-white px-6 py-2 text-xs font-mono fixed top-0 w-full z-[100] flex justify-between items-center">
+        <span>Supabase Status: <span id="status-text" class="text-yellow-400">Initializing...</span></span>
+        <button onclick="this.parentElement.remove()" class="text-white/50 hover:text-white">✕ Close</button>
+    </div>
+
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full rounded-full mt-4 max-w-[95%] left-1/2 -translate-x-1/2 z-50 bg-[#eff8fe]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,100,121,0.08)]">
+        <div class="flex justify-between items-center px-4 md:px-8 py-4 w-full">
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="flex items-center gap-2 group transition-all">
+                    <img alt="Logo" class="h-10 w-10 object-contain group-hover:scale-110 transition-transform" src="logo.png">
+                    <span class="text-xl md:text-2xl font-black text-[#006479] italic tracking-tighter">Clearview Pools</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-x-8 font-bold text-lg tracking-tight">
+                <a class="text-[#273034] opacity-80 hover:text-[#00B4D8] transition-colors" href="index.html">Home</a>
+                <a class="text-[#273034] opacity-80 hover:text-[#00B4D8] transition-colors" href="index.html#services">Services</a>
+                <a class="text-[#273034] opacity-80 hover:text-[#00B4D8] transition-colors" href="index.html#gallery">Gallery</a>
+                <a class="text-primary hover:text-[#00B4D8] transition-colors" href="pool-skool.html">Pool Skool</a>
+                <a class="text-primary flex items-center gap-2 hover:scale-105 transition-transform duration-300" href="tel:7163389700">
+                    <span class="material-symbols-outlined text-2xl">call</span>
+                    716.338.9700
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Hamburger Menu Button -->
+                <button id="menu-toggle" class="md:hidden flex items-center justify-center w-10 h-10 text-[#006479] hover:bg-[#00B4D8]/10 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+
+                <a href="request-a-visit.html" class="bg-[#00B4D8] text-white px-5 md:px-6 py-2.5 rounded-full font-bold text-sm md:text-base hover:scale-105 active:scale-95 transition-all">Request a Visit</a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden opacity-0 scale-y-90 absolute top-full left-1/2 -translate-x-1/2 w-full max-w-[95%] mt-2 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 origin-top transition-all duration-300">
+            <div class="flex flex-col p-6 gap-2 font-bold text-xl text-secondary">
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="index.html">Home</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="index.html#services">Services</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="index.html#gallery">Gallery</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors text-primary" href="pool-skool.html">Pool Skool</a>
+                <div class="h-px bg-primary/10 my-2"></div>
+                <a href="tel:7163389700" class="flex items-center gap-3 p-4 text-primary bg-primary/5 rounded-xl">
+                    <span class="material-symbols-outlined">call</span>
+                    716.338.9700
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.querySelector('#menu-toggle span');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.offsetHeight;
+                menu.classList.remove('opacity-0', 'scale-y-90');
+                menu.classList.add('opacity-100', 'scale-y-100');
+                icon.innerText = 'close';
+            } else {
+                menu.classList.remove('opacity-100', 'scale-y-100');
+                menu.classList.add('opacity-0', 'scale-y-90');
+                icon.innerText = 'menu';
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 300);
+            }
+        }
+        document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+    </script>
+
+    <!-- Header Section -->
+    <header class="relative pt-40 pb-24 overflow-hidden rounded-b-[4rem]">
+        <div class="absolute inset-0 z-0">
+            <img alt="Pool background" class="w-full h-full object-cover" src="hero_bg.jpg">
+            <div class="absolute inset-0 bg-secondary/60 backdrop-blur-[2px]"></div>
+        </div>
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <h1 class="font-headline text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">Pool Skool</h1>
+            <p class="text-white/90 text-xl md:text-2xl font-medium leading-relaxed">
+                Dive deep into our expert guides, pool care secrets, and everything you need to keep your oasis sparkling all season long.
+            </p>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-16 pb-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Loading State -->
+            <div id="loading" class="flex justify-center items-center py-20">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-20 bg-white rounded-[3rem] bubble-shadow">
+                <div class="w-24 h-24 bg-primary-container rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="material-symbols-outlined text-primary text-5xl font-bold">menu_book</span>
+                </div>
+                <h2 class="text-4xl font-black text-secondary mb-4">Class is currently out of session!</h2>
+                <p class="text-xl font-medium text-on-surface-variant max-w-2xl mx-auto">We are getting our study materials together. Check back soon for the best pool care advice.</p>
+            </div>
+
+            <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+                <!-- Articles will be injected here -->
+            </div>
+
+            <!-- Debug View (Hidden unless error) -->
+            <div id="blog-debug" class="mt-20 p-8 bg-slate-900 text-green-400 font-mono text-xs rounded-3xl hidden">
+                <h3 class="text-white font-bold mb-4 uppercase tracking-widest text-sm">System Diagnostics</h3>
+                <div id="debug-log">Initialising diagnostic check...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#c8d7df] rounded-t-[3rem] mt-auto">
+        <div class="w-full px-12 py-16 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col items-center md:items-start">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl font-bold text-[#006479]">Clearview Pools</span>
+                </div>
+                <p class="font-['Plus_Jakarta_Sans'] text-body-md font-medium text-[#273034] mt-4">© 2026 Clearview Pools.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const loading = document.getElementById('loading');
+            const emptyState = document.getElementById('empty-state');
+            const blogGrid = document.getElementById('blog-grid');
+            const statusText = document.getElementById('status-text');
+            const debugContainer = document.getElementById('blog-debug');
+            const debugLog = document.getElementById('debug-log');
+
+            try {
+                statusText.innerText = 'Loading posts from static file...';
+
+                // Fetch articles using local static json file
+                const response = await fetch('posts.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const articles = await response.json();
+
+                loading.classList.add('hidden');
+
+                if (!articles || articles.length === 0) {
+                    statusText.innerText = 'Connected (No Posts Found)';
+                    statusText.className = 'text-green-400';
+                    emptyState.classList.remove('hidden');
+                    
+                    debugContainer.classList.remove('hidden');
+                    debugLog.innerHTML = `<strong>SUCCESS:</strong> Connection established.<br><strong>RESULT:</strong> No posts found in 'posts' table.<br><strong>ACTION:</strong> Visit <a class="underline" href="pool-admin.html">pool-admin.html</a> to create a post.`;
+                    return;
+                }
+
+                statusText.innerText = `Connected (${articles.length} posts found)`;
+                statusText.className = 'text-green-400';
+
+                // Render Articles
+                blogGrid.classList.remove('hidden');
+                
+                articles.forEach(article => {
+                    const date = (article.published_at || article.created_at) ? new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    }) : 'Recently Published';
+
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-[2.5rem] overflow-hidden bubble-shadow flex flex-col transition-transform hover:-translate-y-2 duration-300';
+                    card.innerHTML = `
+                        <div class="h-48 w-full bg-secondary-container overflow-hidden">
+                            ${article.image_url ? `<img src="${article.image_url}" class="w-full h-full object-cover" alt="Article image">` : '<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-4xl text-primary opacity-50">water</span></div>'}
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <span class="text-sm font-bold text-primary mb-2">${date}</span>
+                            <h3 class="text-2xl font-black text-secondary mb-4 line-clamp-2">${article.title}</h3>
+                            <p class="text-on-surface-variant font-medium mb-6 line-clamp-3">${article.excerpt || article.content || 'Read our latest pool care update.'}</p>
+                            <a href="#" class="mt-auto text-primary font-bold flex items-center gap-2 group">
+                                Read Article
+                                <span class="material-symbols-outlined transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </a>
+                        </div>
+                    `;
+                    blogGrid.appendChild(card);
+                });
+
+            } catch (err) {
+                statusText.innerText = 'Crash: ' + err.message;
+                statusText.className = 'text-red-400 font-bold';
+                loading.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                console.error('JS Crash:', err);
+            }
+        });
+    </script>
+</body>
+
+</html>

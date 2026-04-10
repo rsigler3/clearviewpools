@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Clearview Pools | Jump In, The Water's Great!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00B4D8",
+                        "primary-container": "#90e0ef",
+                        "on-primary": "#ffffff",
+                        "secondary": "#006479",
+                        "secondary-container": "#caf0f8",
+                        "tertiary": "#48cae4",
+                        "surface": "#eff8fe",
+                        "on-surface": "#273034",
+                        "surface-variant": "#c8d7df",
+                        "on-surface-variant": "#404850",
+                        "outline": "#707881",
+                        "background": "#f6fafe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "2rem",
+                        "lg": "2.5rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    "animation": {
+                        "bounce-gentle": "bounce-gentle 3s ease-in-out infinite",
+                        "float": "float 4s ease-in-out infinite"
+                    },
+                    "keyframes": {
+                        "bounce-gentle": {
+                            "0%, 100%": { transform: "translateY(-5%)", animationTimingFunction: "cubic-bezier(0.8,0,1,1)" },
+                            "50%": { transform: "none", animationTimingFunction: "cubic-bezier(0,0,0.2,1)" }
+                        },
+                        "float": {
+                            "0%, 100%": { transform: "translateY(0)" },
+                            "50%": { transform: "translateY(-15px)" }
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .bouncy-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bouncy-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .bubble-shadow {
+            box-shadow: 0 20px 40px rgba(0, 180, 216, 0.15);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(0, 100, 121, 0.3), rgba(0, 180, 216, 0.1), transparent);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="bg-background font-body text-on-surface selection:bg-primary/30">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full rounded-full mt-4 max-w-[95%] left-1/2 -translate-x-1/2 z-50 bg-[#eff8fe]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,100,121,0.08)]">
+        <div class="flex justify-between items-center px-4 md:px-8 py-4 w-full">
+            <div class="flex items-center gap-2">
+                <img alt="Logo" class="h-10 w-10 object-contain" src="logo.png" style="">
+                <span class="text-xl md:text-2xl font-black text-[#006479] italic tracking-tighter" style="">Clearview Pools</span>
+            </div>
+            
+            <!-- Desktop Links -->
+            <div
+                class="hidden md:flex items-center gap-x-8 font-['Plus_Jakarta_Sans'] font-bold text-lg tracking-tight">
+                <a class="text-[#273034] opacity-80 hover:scale-105 transition-transform duration-300 hover:text-[#00B4D8]"
+                    href="#" style="">Home</a>
+                <a class="text-[#273034] opacity-80 hover:scale-105 transition-transform duration-300 hover:text-[#00B4D8]"
+                    href="#services" style="">Services</a>
+                <a class="text-[#273034] opacity-80 hover:scale-105 transition-transform duration-300 hover:text-[#00B4D8]"
+                    href="#gallery" style="">Gallery</a>
+                <a class="text-[#273034] opacity-80 hover:scale-105 transition-transform duration-300 hover:text-[#00B4D8]"
+                    href="#contact" style="">Contact</a>
+                <a class="text-[#273034] opacity-80 hover:scale-105 transition-transform duration-300 hover:text-[#00B4D8] text-primary"
+                    href="pool-skool.html" style="">Pool Skool</a>
+                <a class="text-primary flex items-center gap-2 hover:scale-105 transition-transform duration-300"
+                    href="tel:7163389700">
+                    <span class="material-symbols-outlined text-2xl">call</span>
+                    716.338.9700
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Hamburger Menu Button -->
+                <button id="menu-toggle" class="md:hidden flex items-center justify-center w-10 h-10 text-[#006479] hover:bg-[#00B4D8]/10 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+
+                <a href="request-a-visit.html"
+                    class="bg-[#00B4D8] text-white px-5 md:px-6 py-2.5 rounded-full font-bold text-sm md:text-base hover:scale-105 active:scale-95 transition-all duration-200"
+                    style="">Request a Visit</a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden opacity-0 scale-y-90 absolute top-full left-1/2 -translate-x-1/2 w-full max-w-[95%] mt-2 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 origin-top transition-all duration-300">
+            <div class="flex flex-col p-6 gap-2 font-bold text-xl text-secondary">
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="#">Home</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="#services">Services</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="#gallery">Gallery</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="#contact">Contact</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors text-primary" href="pool-skool.html">Pool Skool</a>
+                <div class="h-px bg-primary/10 my-2"></div>
+                <a href="tel:7163389700" class="flex items-center gap-3 p-4 text-primary bg-primary/5 rounded-xl">
+                    <span class="material-symbols-outlined">call</span>
+                    716.338.9700
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.querySelector('#menu-toggle span');
+            
+            if (menu.classList.contains('hidden')) {
+                // Open
+                menu.classList.remove('hidden');
+                // Force reflow
+                menu.offsetHeight;
+                menu.classList.remove('opacity-0', 'scale-y-90');
+                menu.classList.add('opacity-100', 'scale-y-100');
+                icon.innerText = 'close';
+            } else {
+                // Close
+                menu.classList.remove('opacity-100', 'scale-y-100');
+                menu.classList.add('opacity-0', 'scale-y-90');
+                icon.innerText = 'menu';
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 300);
+            }
+        }
+        document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+    </script>
+    <main>
+        <!-- Redesigned Hero Section -->
+        <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden rounded-b-[5rem]">
+            <div class="absolute inset-0 z-0">
+                <img alt="Stunning high-quality crystal clear blue swimming pool at luxury resort"
+                    class="w-full h-full object-cover" src="hero_bg.jpg" style="">
+                <div class="absolute inset-0 bg-gradient-to-b from-secondary/40 via-transparent to-background/20"></div>
+                <div class="absolute inset-0 hero-gradient"></div>
+            </div>
+            <div class="relative z-10 text-center px-6 max-w-5xl mt-20">
+                <div class="mb-6 inline-block animate-float">
+                    <div class="bg-white/90 backdrop-blur-md p-6 rounded-full shadow-2xl border-4 border-primary/20">
+                        <img alt="Frog Mascot" class="h-32 md:h-40 object-contain drop-shadow-lg" src="logo.png"
+                            style="">
+                    </div>
+                </div>
+                <h1 class="font-headline text-5xl md:text-8xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)] mb-4 leading-tight tracking-tighter"
+                    style="">
+                    Clear Water,<br>
+                    <span class="text-primary-container drop-shadow-[0_2px_8px_rgba(0,100,121,0.5)]" style="">Happy
+                        Family!</span>
+                </h1>
+                <p class="text-white text-lg md:text-2xl font-bold max-w-2xl mx-auto drop-shadow-lg leading-relaxed bg-black/10 backdrop-blur-[2px] py-4 px-8 rounded-full mb-8"
+                    style="">
+                    Skip the pool store...We come to you!</p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-24">
+                    <a href="request-a-visit.html"
+                        class="bg-white text-primary px-12 py-6 rounded-full text-xl font-black shadow-2xl transition-all hover:scale-110 active:scale-95 flex items-center gap-3"
+                        style="">
+                        Request a Visit
+                    </a>
+                    <button
+                        class="bg-white/90 backdrop-blur-md border-2 border-white text-primary px-12 py-6 rounded-full text-xl font-black shadow-xl transition-all hover:bg-white hover:scale-110 active:scale-95"
+                        style="">
+                        See our Services
+                    </button>
+                </div>
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-80 bottom-4">
+                <span class="text-white text-xs font-black uppercase tracking-[0.3em]" style="">Dive Deeper</span>
+                <div class="animate-bounce-gentle">
+                    <span class="material-symbols-outlined text-white text-4xl" style="">expand_more</span>
+                </div>
+            </div>
+        </section>
+        <!-- Services Section -->
+        <section class="py-32 bg-surface" id="services">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="mb-20 text-center reveal">
+                    <span class="text-primary font-black uppercase tracking-[0.3em] mb-4 block" style="">Splash-tastic
+                        Services</span>
+                    <h2 class="font-headline text-5xl md:text-6xl font-black text-secondary mb-6" style="">What We Do
+                        For You!</h2>
+                    <p class="text-on-surface-variant text-xl font-medium max-w-xl mx-auto" style="">From bubbles to
+                        balance, we handle all the heavy lifting so you can just focus on the cannonballs.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Main Service -->
+                    <div
+                        class="md:col-span-2 bg-white rounded-[3rem] p-12 bubble-shadow bouncy-card flex flex-col md:flex-row items-center gap-10 reveal" style="transition-delay: 100ms;">
+                        <div class="flex-1">
+                            <div
+                                class="w-16 h-16 bg-primary-container rounded-2xl flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-primary text-4xl font-bold"
+                                    style="">water_drop</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-secondary mb-4" style="">The Weekly Refresh</h3>
+                            <p class="text-on-surface-variant text-lg leading-relaxed" style="">Our signature "Leave It
+                                To Us" service. We test your water and add what it needs to keep it crystal clear. </p>
+                            <button class="mt-8 font-bold text-primary flex items-center gap-2 group" style="">
+                                Tell Me More <span
+                                    class="material-symbols-outlined transition-transform group-hover:translate-x-2"
+                                    style="">arrow_right_alt</span>
+                            </button>
+                        </div>
+                        <div class="w-full md:w-1/2 aspect-square rounded-[2rem] overflow-hidden">
+                            <img alt="Pool Service" class="w-full h-full object-cover" src="service_img.jpg" style="">
+                        </div>
+                    </div>
+                    <!-- Small Services -->
+                    <div class="space-y-8">
+                        <div class="bg-primary text-white rounded-[2.5rem] p-8 bouncy-card shadow-lg reveal" style="transition-delay: 200ms;">
+                            <span class="material-symbols-outlined text-4xl mb-4 block" style="">science</span>
+                            <h3 class="text-2xl font-black mb-2" style="">Pool Chemicals</h3>
+                            <p class="opacity-90 font-medium" style="">We bring the chemicals, balance your water, and
+                                keep everything swim-ready.</p>
+                        </div>
+                        <div class="bg-secondary text-white rounded-[2.5rem] p-8 bouncy-card shadow-lg reveal" style="transition-delay: 300ms;">
+                            <span class="material-symbols-outlined text-4xl mb-4 block" style="">handyman</span>
+                            <h3 class="text-2xl font-black mb-2" style="">Pool Repair</h3>
+                            <p class="opacity-90 font-medium" style="">From leaks to equipment issues, we’ll get your
+                                pool back up and running fast.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Portfolio Section -->
+        <section class="py-32 bg-white" id="gallery">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8 reveal">
+                    <div class="text-center md:text-left">
+                        <h2 class="font-headline text-5xl md:text-6xl font-black text-secondary leading-tight" style="">
+                            Our Happy <br>Pool Family</h2>
+                    </div>
+                    <p class="text-on-surface-variant text-lg font-medium max-w-sm text-center md:text-right" style="">
+                        Check out some of the cool, clear waters we maintain for our awesome neighbors.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="col-span-1 md:col-span-2 row-span-2 rounded-[3rem] overflow-hidden bubble-shadow group reveal" style="transition-delay: 100ms;">
+                        <img alt="Pool Gallery 1"
+                            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrXI3oP7YC5znyCRWs0CX7sFuVuY6Flk6ig8B-ZRn_2A_QGjZZQVQsAp6_WtKbpdYixSPOpE6mJMalemB6eSfOZ_aGQeVyUYiJJsWGOhg2pedAYrn2jwe2ZGPA2aKdrgmKF9KlJ81nh1PI67TY0pOpQ3CFQgUKpY45H6j99_9rK8YlaSwJFFgA4tYbWCrcni8ESi-cVtymuGLi1f5doU7n3D_H3fOhH8NO6GE1Bc3kyRVcLZGiW5PEh-D7k4xUZWdl9MUTbLzlZcs"
+                            style="">
+                    </div>
+                    <div class="rounded-[2rem] overflow-hidden bubble-shadow aspect-square group reveal" style="transition-delay: 200ms;">
+                        <img alt="Pool Gallery 2"
+                            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMs96aps-ifrT83A1RrdMdad1aeS3BkEkD7eEjulsnI3N-wX59HJgcIJB4Xdk2w73mqs5yb866yMzB_YEQgJD7jocXeWtjWObnjrRgMB2hK86xoUSEHIQwhssuA9BoEa7lDGjR3KAT-fh8SAgSdzx_JbBKOEEqpepnnguj9r-I_IRR3F6wJqFO3bEnMSkaRTpQeAJFWbo4qpRJWplLmBXiFBZKRsQoZ7oB4SnCtg5YwCfJdCzuaWMyTaQfTFsZ1aEaiwI5xMRsD5s"
+                            style="">
+                    </div>
+                    <div class="rounded-[2rem] overflow-hidden bubble-shadow aspect-square group reveal" style="transition-delay: 300ms;">
+                        <img alt="Pool Gallery 3"
+                            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzAVxla_K_RjvkRnHu32p9OFs5Q9Qw23_PL8BItpvbg5xsk8qatr5jw1LmmNoabs8Yli1KG3QooaITYGGujc9Evub1cQb48-_tBRt83wAHW_CYcTxjJwak7buPiUBq3JVz9aQ4yv6BlHNr9li66mTFvuUsnKzF6WqwZGx_VUFyPFpQftkVxvPM0vBigcYE4aJLgDFvvzKMLmSmSxHnZWQwmGo926341UhPtPuzSaYD8N_cgmBXBDfnNjg8Q2wQcg5lxdI-VKVKMd8"
+                            style="">
+                    </div>
+                    <div
+                        class="col-span-1 md:col-span-2 rounded-[3rem] overflow-hidden bubble-shadow aspect-video group reveal" style="transition-delay: 400ms;">
+                        <img alt="Pool Gallery 4"
+                            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWsQEI9Pg1pOboD-uLpqEAXwabP2i52HnGVGl2H9uoq3aHx5s4hYc_AAAp_zot4Xlt6K83ASB76Ns9aXp5JjxEHJI4BApDlvjGIv-QThev002oXY0hPn6h1C2pkHNPoa0o7eb8eglnmU9FlrP3yDbJkUtRVJMy-rwukNvGdzy2Gi-cr4y39vvYgPIvIiQ-hhZA9yo_5L8w5gIZjjBO_VYHZ8me7CDJHXWUHnVYZTkI4zC1i-AowYQuInTAnVJCX7MhQbCWDD3hk1c"
+                            style="">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Section -->
+        <section class="py-32 bg-secondary-container/30 rounded-t-[5rem]" id="contact">
+            <div class="max-w-5xl mx-auto px-8">
+                <div class="bg-white rounded-[4rem] p-12 md:p-20 bubble-shadow relative overflow-hidden reveal">
+                    <div class="absolute -right-20 -bottom-20 opacity-10 rotate-12">
+                        <img alt="Mascot background" class="w-96"
+                            src="https://lh3.googleusercontent.com/aida/ADBb0ujNhvXHRTw-pVNheGT9jCgABswhWb26qEzl2q-SaxQJ57fURTDDVcY6je7TSdphWgTp2-foJ6ShcvKKMqIOemFUk50vVYdz27bs2ZAKMuwCM-JNbJo8dEtt0vGCvxtls5483i_9tS9uE_7_AXctCPYDDCFbVVDiPDd2ifGVRE7OvATa6sh3mGev7oRHuPnqZVxdoxETCo7ErItFyLT6vaN6Ts7Tf3IhIaRJ2deqwI1U94FVXZoJB0ikBJBeWN2C4zFHokQQw7a93A"
+                            style="">
+                    </div>
+                    <div class="relative z-10">
+                        <div class="text-center mb-12">
+                            <h2 class="font-headline text-5xl font-black text-secondary mb-4" style="">Let's Get
+                                Started!
+                            </h2>
+                            <a href="tel:7163389700" class="flex items-center justify-center gap-2 text-primary text-2xl font-bold mb-6 hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-3xl">call</span>
+                                716.338.9700
+                            </a>
+                            <p class="text-on-surface-variant text-xl font-medium" style="">Ready for the cleanest pool
+                                you've ever seen? Let's connect!</p>
+                        </div>
+                        <form class="space-y-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-black text-primary uppercase ml-4" style="">Your
+                                        Name</label>
+                                    <input
+                                        class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-5 text-lg outline-none transition-all placeholder:text-on-surface-variant/30"
+                                        placeholder="Tell us who you are!" type="text">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-black text-primary uppercase ml-4" style="">Phone Number</label>
+                                    <input
+                                        class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-5 text-lg outline-none transition-all placeholder:text-on-surface-variant/30"
+                                        placeholder="(716) 555-1234" type="tel">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-black text-primary uppercase ml-4" style="">Email
+                                        Address</label>
+                                    <input
+                                        class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-5 text-lg outline-none transition-all placeholder:text-on-surface-variant/30"
+                                        placeholder="user@mail.com" type="email">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-black text-primary uppercase ml-4" style="">What do you
+                                        need?</label>
+                                    <select
+                                        class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-5 text-lg appearance-none outline-none transition-all">
+                                        <option>Chemical Delivery</option>
+                                        <option>Pool Opening/Closing</option>
+                                        <option>Equipment Help/Repair</option>
+                                        <option>General Questions</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-black text-primary uppercase ml-4" style="">How can we help
+                                    you?</label>
+                                <textarea
+                                    class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-[2rem] px-8 py-6 text-lg outline-none transition-all placeholder:text-on-surface-variant/30"
+                                    placeholder="Tell us about your pool ecosystem!" rows="4"></textarea>
+                            </div>
+                            <button
+                                class="w-full bg-primary hover:bg-secondary text-white py-6 rounded-full font-black text-2xl shadow-xl transition-all hover:scale-[1.02] active:scale-95"
+                                style="">
+                                Send My Splash!
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-[#c8d7df] dark:bg-[#001a20] rounded-t-[3rem] mt-20">
+        <div class="w-full px-12 py-16 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col items-center md:items-start">
+                <div class="flex items-center gap-3">
+                    <img alt="Logo" class="h-8 w-8 object-contain"
+                        src="https://lh3.googleusercontent.com/aida/ADBb0ujNhvXHRTw-pVNheGT9jCgABswhWb26qEzl2q-SaxQJ57fURTDDVcY6je7TSdphWgTp2-foJ6ShcvKKMqIOemFUk50vVYdz27bs2ZAKMuwCM-JNbJo8dEtt0vGCvxtls5483i_9tS9uE_7_AXctCPYDDCFbVVDiPDd2ifGVRE7OvATa6sh3mGev7oRHuPnqZVxdoxETCo7ErItFyLT6vaN6Ts7Tf3IhIaRJ2deqwI1U94FVXZoJB0ikBJBeWN2C4zFHokQQw7a93A"
+                        style="">
+                    <span class="text-xl font-bold text-[#006479]" style="">Clearview Pools</span>
+                </div>
+                <p class="font-['Plus_Jakarta_Sans'] text-body-md font-medium text-[#273034] mt-4" style="">© 2026
+                    Clearview Pools.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8 font-['Plus_Jakarta_Sans'] text-body-md font-medium">
+                <a class="text-[#273034] hover:text-[#00B4D8] transition-colors" href="#" style="">Privacy Policy</a>
+                <a class="text-[#273034] hover:text-[#00B4D8] transition-colors" href="#" style="">Terms of Service</a>
+                <a class="text-[#273034] hover:text-[#00B4D8] transition-colors" href="#" style="">Maintenance Tips</a>
+                <a class="text-[#273034] hover:text-[#00B4D8] transition-colors" href="#" style="">FAQs</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: Unobserve if you only want the animation to happen once
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            document.querySelectorAll('.reveal').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+
+</html>

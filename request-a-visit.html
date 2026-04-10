@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Request a Visit | Clearview Pools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00B4D8",
+                        "primary-container": "#90e0ef",
+                        "on-primary": "#ffffff",
+                        "secondary": "#006479",
+                        "secondary-container": "#caf0f8",
+                        "tertiary": "#48cae4",
+                        "surface": "#eff8fe",
+                        "on-surface": "#273034",
+                        "surface-variant": "#c8d7df",
+                        "on-surface-variant": "#404850",
+                        "outline": "#707881",
+                        "background": "#f6fafe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "2rem",
+                        "lg": "2.5rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .bubble-shadow {
+            box-shadow: 0 30px 60px rgba(0, 100, 121, 0.2);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(0, 100, 121, 0.4), rgba(0, 180, 216, 0.2), transparent);
+        }
+    </style>
+</head>
+
+<body class="bg-background font-body text-on-surface selection:bg-primary/30 min-h-screen">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full rounded-full mt-4 max-w-[95%] left-1/2 -translate-x-1/2 z-50 bg-[#eff8fe]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,100,121,0.08)]">
+        <div class="flex justify-between items-center px-4 md:px-8 py-4 w-full">
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="flex items-center gap-2 group transition-all">
+                    <img alt="Logo" class="h-10 w-10 object-contain group-hover:scale-110 transition-transform" src="logo.png">
+                    <span class="text-xl md:text-2xl font-black text-[#006479] italic tracking-tighter">Clearview Pools</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-x-8 font-bold text-lg tracking-tight">
+                <a class="text-[#273034] opacity-80 hover:text-[#00B4D8] transition-colors" href="index.html">Home</a>
+                <a class="text-[#273034] opacity-80 hover:text-[#00B4D8] transition-colors" href="index.html#services">Services</a>
+                <a class="text-[#273034] opacity-80 hover:text-[#00B4D8] transition-colors" href="index.html#gallery">Gallery</a>
+                <a class="text-primary opacity-80 hover:text-[#00B4D8] transition-colors" href="pool-skool.html">Pool Skool</a>
+                <a class="text-primary flex items-center gap-2 hover:scale-105 transition-transform duration-300" href="tel:7163389700">
+                    <span class="material-symbols-outlined text-2xl">call</span>
+                    716.338.9700
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Hamburger Menu Button -->
+                <button id="menu-toggle" class="md:hidden flex items-center justify-center w-10 h-10 text-[#006479] hover:bg-[#00B4D8]/10 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+
+                <a href="index.html#contact" class="bg-[#00B4D8] text-white px-5 md:px-6 py-2.5 rounded-full font-bold text-sm md:text-base hover:scale-105 active:scale-95 transition-all">Go Back</a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden opacity-0 scale-y-90 absolute top-full left-1/2 -translate-x-1/2 w-full max-w-[95%] mt-2 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 origin-top transition-all duration-300">
+            <div class="flex flex-col p-6 gap-2 font-bold text-xl text-secondary">
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="index.html">Home</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="index.html#services">Services</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors" href="index.html#gallery">Gallery</a>
+                <a onclick="toggleMenu()" class="hover:bg-primary/10 p-4 rounded-xl transition-colors text-primary" href="pool-skool.html">Pool Skool</a>
+                <div class="h-px bg-primary/10 my-2"></div>
+                <a href="tel:7163389700" class="flex items-center gap-3 p-4 text-primary bg-primary/5 rounded-xl">
+                    <span class="material-symbols-outlined">call</span>
+                    716.338.9700
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.querySelector('#menu-toggle span');
+            
+            if (menu.classList.contains('hidden')) {
+                // Open
+                menu.classList.remove('hidden');
+                // Force reflow
+                menu.offsetHeight;
+                menu.classList.remove('opacity-0', 'scale-y-90');
+                menu.classList.add('opacity-100', 'scale-y-100');
+                icon.innerText = 'close';
+            } else {
+                // Close
+                menu.classList.remove('opacity-100', 'scale-y-100');
+                menu.classList.add('opacity-0', 'scale-y-90');
+                icon.innerText = 'menu';
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 300);
+            }
+        }
+        document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+    </script>
+
+    <main class="relative pt-32 pb-20 min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img alt="Background" class="w-full h-full object-cover" src="hero_bg.jpg">
+            <div class="absolute inset-0 bg-secondary/30 backdrop-blur-[2px]"></div>
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-2xl px-6">
+            <div id="form-container" class="bg-white/50 backdrop-blur-3xl rounded-[4rem] p-8 md:p-12 bubble-shadow transition-all duration-500">
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl md:text-5xl font-black text-secondary mb-4 tracking-tight">Request a Visit</h1>
+                    <p class="text-on-surface-variant text-lg font-medium">Ready for crystal clear water? Tell us about your pool!</p>
+                </div>
+
+                <form id="request-form" class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-black text-primary uppercase ml-4">Your Name</label>
+                        <input required class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-4 text-lg outline-none transition-all placeholder:text-on-surface-variant/30" placeholder="e.g. John Smith" type="text" name="name">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-black text-primary uppercase ml-4">Phone Number</label>
+                        <input required class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-4 text-lg outline-none transition-all placeholder:text-on-surface-variant/30" placeholder="(716) 555-1234" type="tel" name="phone">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-black text-primary uppercase ml-4">Address</label>
+                        <input required class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-full px-8 py-4 text-lg outline-none transition-all placeholder:text-on-surface-variant/30" placeholder="Enter your service address" type="text" name="address">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-black text-primary uppercase ml-4">What can we do for your pool?</label>
+                        <textarea required class="w-full bg-surface border-4 border-transparent focus:border-primary rounded-[2rem] px-8 py-5 text-lg outline-none transition-all placeholder:text-on-surface-variant/30" placeholder="e.g. Weekly maintenance, chemical balance, or general cleanup..." rows="4" name="notes"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-5 rounded-full font-black text-2xl shadow-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
+                        Send My Splash!
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </form>
+
+                <!-- Success Message (Hidden by default) -->
+                <div id="success-message" class="hidden text-center py-10 scale-95 opacity-0 transition-all duration-500 select-none">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-green-600 text-5xl font-bold">check_circle</span>
+                    </div>
+                    <h2 class="text-4xl font-black text-secondary mb-4">Splashtastic!</h2>
+                    <p class="text-xl font-medium text-on-surface-variant">Thank you, we will contact you as soon as possible.</p>
+                    <a href="index.html" class="mt-10 inline-block text-primary font-bold hover:underline underline-offset-8">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('request-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const container = document.getElementById('form-container');
+            const success = document.getElementById('success-message');
+
+            // Simple transition effect
+            form.style.opacity = '0';
+            form.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                form.classList.add('hidden');
+                success.classList.remove('hidden');
+                
+                // Animate success message in
+                setTimeout(() => {
+                    success.classList.remove('scale-95', 'opacity-0');
+                    success.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>
