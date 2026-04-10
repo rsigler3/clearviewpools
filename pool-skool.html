@@ -68,13 +68,6 @@
     </script>
 </head>
 
-<body class="bg-background font-body text-on-surface selection:bg-primary/30 min-h-screen flex flex-col">
-    <!-- Immediate Diagnostic Banner -->
-    <div id="connection-status" class="bg-black text-white px-6 py-2 text-xs font-mono fixed top-0 w-full z-[100] flex justify-between items-center">
-        <span>Supabase Status: <span id="status-text" class="text-yellow-400">Initializing...</span></span>
-        <button onclick="this.parentElement.remove()" class="text-white/50 hover:text-white">✕ Close</button>
-    </div>
-
     <!-- TopNavBar -->
     <nav
         class="fixed top-0 w-full rounded-full mt-4 max-w-[95%] left-1/2 -translate-x-1/2 z-50 bg-[#eff8fe]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,100,121,0.08)]">
@@ -181,11 +174,6 @@
                 <!-- Articles will be injected here -->
             </div>
 
-            <!-- Debug View (Hidden unless error) -->
-            <div id="blog-debug" class="mt-20 p-8 bg-slate-900 text-green-400 font-mono text-xs rounded-3xl hidden">
-                <h3 class="text-white font-bold mb-4 uppercase tracking-widest text-sm">System Diagnostics</h3>
-                <div id="debug-log">Initialising diagnostic check...</div>
-            </div>
         </div>
     </main>
 
@@ -206,13 +194,8 @@
             const loading = document.getElementById('loading');
             const emptyState = document.getElementById('empty-state');
             const blogGrid = document.getElementById('blog-grid');
-            const statusText = document.getElementById('status-text');
-            const debugContainer = document.getElementById('blog-debug');
-            const debugLog = document.getElementById('debug-log');
 
             try {
-                statusText.innerText = 'Loading posts from static file...';
-
                 // Fetch articles using local static json file
                 const response = await fetch('posts.json');
                 if (!response.ok) {
@@ -223,17 +206,9 @@
                 loading.classList.add('hidden');
 
                 if (!articles || articles.length === 0) {
-                    statusText.innerText = 'Connected (No Posts Found)';
-                    statusText.className = 'text-green-400';
                     emptyState.classList.remove('hidden');
-                    
-                    debugContainer.classList.remove('hidden');
-                    debugLog.innerHTML = `<strong>SUCCESS:</strong> Connection established.<br><strong>RESULT:</strong> No posts found in 'posts' table.<br><strong>ACTION:</strong> Visit <a class="underline" href="pool-admin.html">pool-admin.html</a> to create a post.`;
                     return;
                 }
-
-                statusText.innerText = `Connected (${articles.length} posts found)`;
-                statusText.className = 'text-green-400';
 
                 // Render Articles
                 blogGrid.classList.remove('hidden');
@@ -247,7 +222,7 @@
                     card.className = 'bg-white rounded-[2.5rem] overflow-hidden bubble-shadow flex flex-col transition-transform hover:-translate-y-2 duration-300';
                     card.innerHTML = `
                         <div class="h-48 w-full bg-secondary-container overflow-hidden">
-                            ${article.image_url ? `<img src="${article.image_url}" class="w-full h-full object-cover" alt="Article image">` : '<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-4xl text-primary opacity-50">water</span></div>'}
+                            ${article.featured_image ? `<img src="${article.featured_image}" class="w-full h-full object-cover" alt="Article image">` : '<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-4xl text-primary opacity-50">water</span></div>'}
                         </div>
                         <div class="p-8 flex flex-col flex-grow">
                             <span class="text-sm font-bold text-primary mb-2">${date}</span>
@@ -263,8 +238,6 @@
                 });
 
             } catch (err) {
-                statusText.innerText = 'Crash: ' + err.message;
-                statusText.className = 'text-red-400 font-bold';
                 loading.classList.add('hidden');
                 emptyState.classList.remove('hidden');
                 console.error('JS Crash:', err);
