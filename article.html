@@ -180,6 +180,10 @@
                     <!-- HTML Content goes here -->
                 </div>
 
+                <!-- Next/Prev Navigation -->
+                <div id="article-navigation" class="mt-16 pt-8 border-t-2 border-surface-variant flex flex-col md:flex-row justify-between gap-6 hidden">
+                </div>
+
             </div>
         </div>
     </main>
@@ -251,6 +255,42 @@
                 // Populate Rich Text Body
                 articleBody.innerHTML = article.content || '<p>No content provided.</p>';
                 articleBody.classList.remove('hidden');
+
+                // Render Next/Previous navigation
+                const currentIdx = articles.findIndex(a => a.slug === slug);
+                const articleNavigation = document.getElementById('article-navigation');
+                let navHtml = '';
+
+                // Chronologically older article (Previous Post)
+                if (currentIdx < articles.length - 1) {
+                    const prevArticle = articles[currentIdx + 1];
+                    navHtml += `
+                        <a href="article.html?slug=${prevArticle.slug}" class="flex-1 flex flex-col items-start p-6 bg-[#f6fafe] hover:bg-[#caf0f8] rounded-[2rem] transition-all group text-left border-2 border-transparent hover:border-primary/20">
+                            <span class="text-xs font-bold uppercase text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">arrow_back</span> Read Previous</span>
+                            <span class="text-xl font-black text-secondary group-hover:text-primary transition-colors line-clamp-2">${prevArticle.title}</span>
+                        </a>
+                    `;
+                } else {
+                    navHtml += `<div class="flex-1"></div>`; // spacer
+                }
+
+                // Chronologically newer article (Next Post)
+                if (currentIdx > 0) {
+                    const nextArticle = articles[currentIdx - 1];
+                    navHtml += `
+                        <a href="article.html?slug=${nextArticle.slug}" class="flex-1 flex flex-col items-end p-6 bg-[#f6fafe] hover:bg-[#caf0f8] rounded-[2rem] transition-all group text-right border-2 border-transparent hover:border-primary/20">
+                            <span class="text-xs font-bold uppercase text-primary mb-2 flex items-center gap-1">Read Next <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                            <span class="text-xl font-black text-secondary group-hover:text-primary transition-colors line-clamp-2">${nextArticle.title}</span>
+                        </a>
+                    `;
+                } else {
+                    navHtml += `<div class="flex-1"></div>`; // spacer
+                }
+
+                if (articles.length > 1) {
+                    articleNavigation.innerHTML = navHtml;
+                    articleNavigation.classList.remove('hidden');
+                }
 
             } catch (err) {
                 console.error("Error loading article:", err);
