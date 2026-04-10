@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Pool Skool | Clearview Pools</title>
+    <title>Article | Clearview Pools</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
         rel="stylesheet">
     <link
@@ -54,20 +54,22 @@
             box-shadow: 0 30px 60px rgba(0, 100, 121, 0.2);
         }
 
-        .hero-gradient {
-            background: linear-gradient(to bottom, rgba(0, 100, 121, 0.4), rgba(0, 180, 216, 0.2), transparent);
-        }
+        /* Essential styles for Quill inserted content */
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #404850; font-size: 1.125rem;}
+        .article-content strong { color: #006479; font-weight: 800; }
+        .article-content em { font-style: italic; color: #273034; }
+        .article-content h1, .article-content h2, .article-content h3 { color: #006479; font-weight: 800; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .article-content h2 { font-size: 2.25rem; }
+        .article-content h3 { font-size: 1.75rem; }
+        .article-content ul { list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem; color: #404850; font-size: 1.125rem;}
+        .article-content ol { list-style-type: decimal; padding-left: 2rem; margin-bottom: 1.5rem; color: #404850; font-size: 1.125rem;}
+        .article-content li { margin-bottom: 0.5rem; }
+        .article-content a { color: #00B4D8; text-decoration: underline; font-weight: 600; }
+        .article-content img { border-radius: 1.5rem; max-width: 100%; height: auto; margin: 2rem 0; box-shadow: 0 15px 30px rgba(0,100,121,0.1); }
     </style>
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const supabaseUrl = 'https://pddrwxvauofsnchcmodn.supabase.co';
-        const supabaseKey = 'sb_publishable_w_x9uuDPvOxYBpEr8Q4k6Q_ZHNAbMuX';
-        // Renamed to supabaseClient to avoid collision with the library global 'supabase'
-        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    </script>
 </head>
 
+<body class="bg-background font-body text-on-surface selection:bg-primary/30 min-h-screen flex flex-col">
     <!-- TopNavBar -->
     <nav
         class="fixed top-0 w-full rounded-full mt-4 max-w-[95%] left-1/2 -translate-x-1/2 z-50 bg-[#eff8fe]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,100,121,0.08)]">
@@ -92,11 +94,9 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <!-- Hamburger Menu Button -->
                 <button id="menu-toggle" class="md:hidden flex items-center justify-center w-10 h-10 text-[#006479] hover:bg-[#00B4D8]/10 rounded-full transition-colors">
                     <span class="material-symbols-outlined text-3xl">menu</span>
                 </button>
-
                 <a href="request-a-visit.html" class="bg-[#00B4D8] text-white px-5 md:px-6 py-2.5 rounded-full font-bold text-sm md:text-base hover:scale-105 active:scale-95 transition-all">Request a Visit</a>
             </div>
         </div>
@@ -121,7 +121,6 @@
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.querySelector('#menu-toggle span');
-            
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
                 menu.offsetHeight;
@@ -132,48 +131,56 @@
                 menu.classList.remove('opacity-100', 'scale-y-100');
                 menu.classList.add('opacity-0', 'scale-y-90');
                 icon.innerText = 'menu';
-                setTimeout(() => {
-                    menu.classList.add('hidden');
-                }, 300);
+                setTimeout(() => menu.classList.add('hidden'), 300);
             }
         }
         document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
     </script>
 
-    <!-- Header Section -->
-    <header class="relative pt-40 pb-24 overflow-hidden rounded-b-[4rem]">
-        <div class="absolute inset-0 z-0">
-            <img alt="Pool background" class="w-full h-full object-cover" src="hero_bg.jpg">
-            <div class="absolute inset-0 bg-secondary/60 backdrop-blur-[2px]"></div>
+    <!-- Header Section (Dynamic) -->
+    <header class="relative pt-40 pb-24 overflow-hidden rounded-b-[4rem] min-h-[50vh] flex flex-col justify-end">
+        <div class="absolute inset-0 z-0 bg-secondary" id="hero-bg-container">
+            <!-- Background Image inserted by JS -->
+            <div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/50 to-secondary/20"></div>
         </div>
-        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-            <h1 class="font-headline text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">Pool Skool</h1>
-            <p class="text-white/90 text-xl md:text-2xl font-medium leading-relaxed">
-                Dive deep into our expert guides, pool care secrets, and everything you need to keep your oasis sparkling all season long.
-            </p>
+        <div class="relative z-10 text-left px-6 w-full max-w-4xl mx-auto">
+            <a href="pool-skool.html" class="inline-flex items-center gap-2 text-white/80 hover:text-white font-bold mb-6 transition-all hover:-translate-x-2">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Back to all articles
+            </a>
+            
+            <div id="date-badge" class="inline-block bg-primary/20 backdrop-blur-md text-white px-4 py-1.5 rounded-full font-bold text-sm mb-4">
+                Loading...
+            </div>
+            
+            <h1 id="article-title" class="font-headline text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+                Loading Article...
+            </h1>
         </div>
     </header>
 
-    <main class="flex-grow pt-16 pb-32">
-        <div class="max-w-7xl mx-auto px-6">
-            <!-- Loading State -->
-            <div id="loading" class="flex justify-center items-center py-20">
-                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary"></div>
-            </div>
-
-            <!-- Empty State -->
-            <div id="empty-state" class="hidden text-center py-20 bg-white rounded-[3rem] bubble-shadow">
-                <div class="w-24 h-24 bg-primary-container rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-primary text-5xl font-bold">menu_book</span>
+    <!-- Main Content -->
+    <main class="flex-grow pb-32">
+        <div class="max-w-4xl mx-auto px-6 -mt-12 relative z-20">
+            <div class="bg-white rounded-[3rem] p-8 md:p-16 bubble-shadow min-h-[500px]">
+                
+                <div id="loading" class="flex flex-col justify-center items-center py-20 text-primary">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-4"></div>
+                    <span class="font-bold">Fetching article...</span>
                 </div>
-                <h2 class="text-4xl font-black text-secondary mb-4">Class is currently out of session!</h2>
-                <p class="text-xl font-medium text-on-surface-variant max-w-2xl mx-auto">We are getting our study materials together. Check back soon for the best pool care advice.</p>
-            </div>
 
-            <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
-                <!-- Articles will be injected here -->
-            </div>
+                <div id="error-state" class="hidden text-center py-10">
+                    <span class="material-symbols-outlined text-red-500 text-6xl mb-4">error</span>
+                    <h2 class="text-3xl font-black text-secondary mb-2">Article Not Found</h2>
+                    <p class="text-on-surface-variant font-medium mb-8">We could not find the article you are looking for.</p>
+                    <a href="pool-skool.html" class="bg-primary hover:bg-secondary text-white py-3 px-8 rounded-full font-black transition-all">Return to articles</a>
+                </div>
 
+                <div id="article-body" class="article-content hidden">
+                    <!-- HTML Content goes here -->
+                </div>
+
+            </div>
         </div>
     </main>
 
@@ -191,59 +198,66 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            const loading = document.getElementById('loading');
-            const emptyState = document.getElementById('empty-state');
-            const blogGrid = document.getElementById('blog-grid');
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            const loadingState = document.getElementById('loading');
+            const errorState = document.getElementById('error-state');
+            const articleBody = document.getElementById('article-body');
+
+            if (!slug) {
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                return;
+            }
 
             try {
-                // Fetch articles using local static json file
+                // Fetch the static json file
                 const response = await fetch('posts.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error("Could not load posts.json");
+                
                 const articles = await response.json();
+                
+                // Find the specific article
+                const article = articles.find(a => a.slug === slug);
 
-                loading.classList.add('hidden');
+                loadingState.classList.add('hidden');
 
-                if (!articles || articles.length === 0) {
-                    emptyState.classList.remove('hidden');
+                if (!article) {
+                    errorState.classList.remove('hidden');
                     return;
                 }
 
-                // Render Articles
-                blogGrid.classList.remove('hidden');
+                // Populate Metadata
+                document.title = article.title + " | Clearview Pools";
+                document.getElementById('article-title').innerText = article.title;
                 
-                articles.forEach(article => {
-                    const date = (article.published_at || article.created_at) ? new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
+                const dateRaw = article.published_at || article.created_at;
+                if (dateRaw) {
+                    const dateRawObj = new Date(dateRaw);
+                    document.getElementById('date-badge').innerText = dateRawObj.toLocaleDateString('en-US', {
                         year: 'numeric', month: 'long', day: 'numeric'
-                    }) : 'Recently Published';
+                    });
+                } else {
+                    document.getElementById('date-badge').innerText = "Recently Published";
+                }
 
-                    const card = document.createElement('div');
-                    card.className = 'bg-white rounded-[2.5rem] overflow-hidden bubble-shadow flex flex-col transition-transform hover:-translate-y-2 duration-300';
-                    card.innerHTML = `
-                        <div class="h-48 w-full bg-secondary-container overflow-hidden">
-                            ${article.featured_image ? `<img src="${article.featured_image}" class="w-full h-full object-cover" alt="Article image">` : '<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-4xl text-primary opacity-50">water</span></div>'}
-                        </div>
-                        <div class="p-8 flex flex-col flex-grow">
-                            <span class="text-sm font-bold text-primary mb-2">${date}</span>
-                            <h3 class="text-2xl font-black text-secondary mb-4 line-clamp-2">${article.title}</h3>
-                            <p class="text-on-surface-variant font-medium mb-6 line-clamp-3">${article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 150) || 'Read our latest pool care update.'}</p>
-                            <a href="article.html?slug=${article.slug}" class="mt-auto text-primary font-bold flex items-center gap-2 group">
-                                Read Article
-                                <span class="material-symbols-outlined transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                            </a>
-                        </div>
-                    `;
-                    blogGrid.appendChild(card);
-                });
+                // Populate Background Image
+                if (article.featured_image) {
+                    const bgContainer = document.getElementById('hero-bg-container');
+                    bgContainer.innerHTML = `<img src="${article.featured_image}" class="absolute inset-0 w-full h-full object-cover">` + bgContainer.innerHTML;
+                }
+
+                // Populate Rich Text Body
+                articleBody.innerHTML = article.content || '<p>No content provided.</p>';
+                articleBody.classList.remove('hidden');
 
             } catch (err) {
-                loading.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                console.error('JS Crash:', err);
+                console.error("Error loading article:", err);
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
             }
         });
     </script>
 </body>
-
 </html>
