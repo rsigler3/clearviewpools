@@ -196,11 +196,9 @@
             const blogGrid = document.getElementById('blog-grid');
 
             try {
-                // Fetch articles using local static json file
-                const response = await fetch('posts.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                // Fetch articles using offloaded static JSON file hosted on the storage edge
+                const response = await fetch('https://pddrwxvauofsnchcmodn.supabase.co/storage/v1/object/public/blog-images/posts.json');
+                if (!response.ok) throw new Error("Could not load posts.json. Ensure the storage bucket is public and contains the file.");
                 const articles = await response.json();
 
                 loading.classList.add('hidden');

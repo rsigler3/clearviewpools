@@ -54,7 +54,6 @@
         <div class="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
             <h1 class="text-3xl font-black text-secondary">Pool Skool Admin</h1>
             <div class="flex items-center gap-4">
-                <input type="text" id="webhook-url" class="bg-surface border-2 border-transparent focus:border-primary rounded-full px-4 py-2 outline-none text-xs w-48 hidden md:block" placeholder="Build Webhook URL (Netlify/Vercel)">
                 <a href="pool-skool.html" class="text-primary font-bold hover:underline">View Live Blog &rarr;</a>
             </div>
         </div>
@@ -193,30 +192,35 @@
         }
 
         async function triggerJsonSync() {
-            const webhookUrl = document.getElementById('webhook-url').value;
             try {
-                // 1. Try hitting the local python server we built
-                const res = await fetch('/api/sync', { method: 'POST' });
-                if (res.ok) {
-                    console.log('Successfully synced local posts.json!');
-                    return true;
-                }
+                // 1. Fetch updated posts straight from the database
+                const { data: posts, error: fetchErr } = await supabaseClient
+                    .from('posts')
+                    .select('*')
+                    .eq('status', 'published')
+                    .order('created_at', { ascending: false });
+                
+                if (fetchErr) throw fetchErr;
+
+                // 2. Generate a fresh posts.json file in-memory
+                const blob = new Blob([JSON.stringify(posts)], { type: 'application/json' });
+                
+                // 3. Upload it directly over to the public Cloud storage edge
+                const { error: uploadErr } = await supabaseClient
+                    .storage
+                    .from('blog-images')
+                    .upload('posts.json', blob, {
+                        cacheControl: '10',  
+                        upsert: true
+                    });
+                
+                if (uploadErr) throw uploadErr;
+                
+                return true;
             } catch (err) {
-                console.log('Local backend not running. Falling back to webhook...');
+                console.error("Failed to generate and upload JSON cache:", err);
+                return false;
             }
-
-            // 2. Fallback to production webhook
-            if (webhookUrl) {
-                try {
-                    await fetch(webhookUrl, { method: 'POST' });
-                    console.log('Webhook triggered successfully!');
-                    return true;
-                } catch (err) {
-                    alert('Failed to trigger production webhook. Make sure the URL is correct.');
-                }
-            }
-
-            return false;
         }
 
         window.editPost = function(post) {
@@ -259,8 +263,12 @@
                 alert('Failed to delete: ' + error.message);
                 btn.innerText = originalText;
             } else {
-                await triggerJsonSync(); // Immediately rewrite JSON
-                loadManagePosts(); // Refresh the list
+                const synced = await triggerJsonSync(); // Push updated JSON to edge storage
+                
+                if (synced) btn.innerText = 'Deleted Successfully!';
+                else btn.innerText = 'JSON Sync Failed :(';
+                
+                setTimeout(() => loadManagePosts(), 1000); // Refresh the list
             }
         }
 
@@ -336,13 +344,13 @@
                 status.innerText = `Error: ${queryError.message}`;
                 status.className = 'mt-4 font-bold py-3 px-6 rounded-full text-center bg-red-100 text-red-600 block';
             } else {
-                status.innerText = 'Applying changes and generating posts.json...';
+                status.innerText = 'Pushing to static storage...';
                 status.className = 'mt-4 font-bold py-3 px-6 rounded-full text-center bg-blue-100 text-blue-600 block';
                 
-                // Immediately import/rewrite JSON
+                // Immediately import/rewrite JSON across the Cloud
                 await triggerJsonSync();
 
-                status.innerText = currentEditId ? 'Article updated & JSON Synced!' : 'Article published & JSON Synced!';
+                status.innerText = currentEditId ? 'Article updated successfully!' : 'Article published successfully!';
                 status.className = 'mt-4 font-bold py-3 px-6 rounded-full text-center bg-green-100 text-green-600 block';
                 
                 // Reset form state
