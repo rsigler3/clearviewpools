@@ -90,10 +90,45 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Splash Screen Drain Animation */
+        #video-splash {
+            animation: drainDown 1.5s cubic-bezier(0.77, 0, 0.175, 1) 3s forwards;
+            will-change: transform;
+        }
+
+        @keyframes drainDown {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); visibility: hidden;}
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
 <body class="bg-background font-body text-on-surface selection:bg-primary/30">
+    <!-- Video Splash Screen -->
+    <div id="video-splash" class="fixed inset-0 z-[10000] bg-[#00B4D8] flex flex-col items-center justify-center overflow-hidden">
+        <video autoplay muted playsinline class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80 pointer-events-none">
+            <source src="bubbles.mp4" type="video/mp4">
+        </video>
+        <div class="relative z-10 flex flex-col items-center justify-center fade-in-up">
+            <img src="logo.png" alt="Clearview Mascot" class="w-48 h-48 sm:w-64 sm:h-64 object-contain drop-shadow-2xl">
+            <h2 class="text-white text-5xl sm:text-7xl font-black italic tracking-tighter mt-4 drop-shadow-lg">Clearview Pools</h2>
+        </div>
+    </div>
+
     <!-- TopNavBar -->
     <nav
         class="fixed top-0 w-full rounded-full mt-4 max-w-[95%] left-1/2 -translate-x-1/2 z-50 bg-[#eff8fe]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,100,121,0.08)]">
@@ -412,6 +447,15 @@
     </footer>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Splash Screen Overflow Logic
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0); // Lock to top during splash
+            setTimeout(() => {
+                document.body.style.overflow = '';
+                const splash = document.getElementById('video-splash');
+                if(splash) splash.remove();
+            }, 4500); // 3s delay + 1.5s drain
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
