@@ -55,15 +55,18 @@
         }
 
         /* Essential styles for Quill inserted content */
-        .article-content p { margin-bottom: 10px; line-height: 1; color: #404850; font-size: 1.125rem;}
+        .article-content { color: #404850; font-size: 1.125rem; }
+        .article-content p { margin-top: 0; margin-bottom: 0.9em; line-height: 1.6; }
         .article-content strong { color: #006479; font-weight: 800; }
         .article-content em { font-style: italic; color: #273034; }
-        .article-content h1, .article-content h2, .article-content h3 { color: #006479; font-weight: 800; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .article-content h1, .article-content h2, .article-content h3 { color: #006479; font-weight: 800; margin-top: 1.4em; margin-bottom: 0.5em; line-height: 1.2; }
         .article-content h2 { font-size: 2.25rem; }
         .article-content h3 { font-size: 1.75rem; }
-        .article-content ul { list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem; color: #404850; font-size: 1.125rem;}
-        .article-content ol { list-style-type: decimal; padding-left: 2rem; margin-bottom: 1.5rem; color: #404850; font-size: 1.125rem;}
-        .article-content li { margin-bottom: 0.5rem; }
+        .article-content ul, .article-content ol { margin-top: 0.5em; margin-bottom: 1em; padding-left: 1.25em; }
+        .article-content ul { list-style-type: disc; }
+        .article-content ol { list-style-type: decimal; }
+        .article-content li { margin-bottom: 0.35em; line-height: 1.6; }
+        .article-content br + br { display: none; }
         .article-content a { color: #00B4D8; text-decoration: underline; font-weight: 600; }
         .article-content img { border-radius: 1.5rem; max-width: 100%; height: auto; margin: 2rem 0; box-shadow: 0 15px 30px rgba(0,100,121,0.1); }
     </style>
