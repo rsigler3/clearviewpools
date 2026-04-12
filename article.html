@@ -272,9 +272,9 @@
                 // Bold (**text**)
                 cleanContent = cleanContent.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
                 // Bullet Points (* Text) at the beginning of paragraphs
-                cleanContent = cleanContent.replace(/<p[^>]*>(\s|&nbsp;)*\*\s+(.*?)<\/p>/gi, '<ul><li>$2</li></ul>');
+                cleanContent = cleanContent.replace(/<p[^>]*>(?:\s|&nbsp;)*\*(?:\s|&nbsp;)+(.*?)<\/p>/gi, '<ul><li>$1</li></ul>');
                 // Handle cases where bullets are separated by <br> within a paragraph (now a <ul><li> block)
-                cleanContent = cleanContent.replace(/<br\s*\/?>(\s|&nbsp;)*\*\s+/gi, '</li><li>');
+                cleanContent = cleanContent.replace(/<br\s*\/?>(?:\s|&nbsp;)*\*(?:\s|&nbsp;)+/gi, '</li><li>');
                 // Group newly formed adjacent lists
                 cleanContent = cleanContent.replace(/<\/ul>\s*<ul>/gi, '');
                 

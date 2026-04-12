@@ -285,7 +285,8 @@
             // Get Rich Text HTML and cleanly parse any unformatted Markdown from paste (Notebook LM) before saving
             let rawContent = quill.root.innerHTML;
             rawContent = rawContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            rawContent = rawContent.replace(/<p>(\s|&nbsp;)*\*\s+(.*?)<\/p>/gi, '<ul><li>$2</li></ul>');
+            rawContent = rawContent.replace(/<p[^>]*>(?:\s|&nbsp;)*\*(?:\s|&nbsp;)+(.*?)<\/p>/gi, '<ul><li>$1</li></ul>');
+            rawContent = rawContent.replace(/<br\s*\/?>(?:\s|&nbsp;)*\*(?:\s|&nbsp;)+/gi, '</li><li>');
             rawContent = rawContent.replace(/<\/ul>\s*<ul>/gi, '');
             const content = rawContent;
             
