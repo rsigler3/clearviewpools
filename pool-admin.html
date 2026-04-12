@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-markdown-shortcuts@0.0.10/dist/markdownShortcuts.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             theme: {
@@ -113,10 +114,10 @@
     </div>
 
     <script>
-        // Initialize Quill Rich Text Editor
         var quill = new Quill('#editor-container', {
             theme: 'snow',
             modules: {
+                markdownShortcuts: {},
                 toolbar: [
                     [{ 'header': [2, 3, 4, false] }],
                     ['bold', 'italic', 'underline', 'strike'],        
@@ -280,7 +281,13 @@
             
             const title = document.getElementById('title').value;
             const excerpt = document.getElementById('excerpt').value;
-            const content = quill.root.innerHTML; // Get Rich Text HTML
+            
+            // Get Rich Text HTML and cleanly parse any unformatted Markdown from paste (Notebook LM) before saving
+            let rawContent = quill.root.innerHTML;
+            rawContent = rawContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            rawContent = rawContent.replace(/<p>(\s|&nbsp;)*\*\s+(.*?)<\/p>/gi, '<ul><li>$2</li></ul>');
+            rawContent = rawContent.replace(/<\/ul>\s*<ul>/gi, '');
+            const content = rawContent;
             
             const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
