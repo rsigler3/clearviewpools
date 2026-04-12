@@ -256,7 +256,15 @@
                 }
 
                 // Populate Rich Text Body
-                articleBody.innerHTML = article.content || '<p>No content provided.</p>';
+                let cleanContent = article.content || '<p>No content provided.</p>';
+                
+                // Clean up excessive spacing from pasted content
+                // Remove empty paragraphs
+                cleanContent = cleanContent.replace(/<p[^>]*>(?:\s|&nbsp;|<br\s*\/?>)*<\/p>/gi, '');
+                // Reduce multiple <br> tags to a single <br>
+                cleanContent = cleanContent.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br>');
+                
+                articleBody.innerHTML = cleanContent;
                 articleBody.classList.remove('hidden');
 
                 // Render Next/Previous navigation
