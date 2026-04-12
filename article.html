@@ -268,6 +268,16 @@
                 // Reduce multiple <br> tags to a single <br>
                 cleanContent = cleanContent.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br>');
                 
+                // Parse Notebook LM Markdown
+                // Bold (**text**)
+                cleanContent = cleanContent.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                // Bullet Points (* Text) at the beginning of paragraphs
+                cleanContent = cleanContent.replace(/<p[^>]*>(\s|&nbsp;)*\*\s+(.*?)<\/p>/gi, '<ul><li>$2</li></ul>');
+                // Handle cases where bullets are separated by <br> within a paragraph (now a <ul><li> block)
+                cleanContent = cleanContent.replace(/<br\s*\/?>(\s|&nbsp;)*\*\s+/gi, '</li><li>');
+                // Group newly formed adjacent lists
+                cleanContent = cleanContent.replace(/<\/ul>\s*<ul>/gi, '');
+                
                 articleBody.innerHTML = cleanContent;
                 articleBody.classList.remove('hidden');
 
