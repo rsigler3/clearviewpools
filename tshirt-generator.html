@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>T-Shirt Saying Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: "#e11d2e",
+                        "brand-dark": "#b3121f",
+                        ink: "#1f2937"
+                    },
+                    fontFamily: {
+                        sans: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: pop 0.25s ease-out;
+        }
+        .btn-press:active {
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gray-100 font-sans text-ink flex items-center justify-center p-6">
+    <main class="w-full max-w-md text-center">
+        <h1 class="text-3xl font-extrabold mb-2">T-Shirt Saying Generator</h1>
+        <p class="text-gray-500 mb-8">Hit the button for a shirt-worthy laugh.</p>
+
+        <div class="bg-white rounded-3xl shadow-lg p-8 mb-8 min-h-[140px] flex items-center justify-center">
+            <p id="saying" class="text-xl font-bold leading-snug">
+                Your saying will show up here.
+            </p>
+        </div>
+
+        <button id="generate-btn"
+            class="btn-press transition-transform bg-brand hover:bg-brand-dark text-white font-bold text-lg px-10 py-4 rounded-full shadow-md">
+            Generate
+        </button>
+    </main>
+
+    <script>
+        const sayings = [
+            "I put the 'pro' in procrastinate",
+            "Powered by coffee and spite",
+            "World's okayest human",
+            "My cardio is running late",
+            "Certified nap enthusiast",
+            "I'm not lazy, I'm on energy saving mode",
+            "Warning: contents under caffeinated",
+            "Adulting is exhausting, send snacks",
+            "I paused my game to be here",
+            "Professional overthinker",
+            "Introvert trapped in extrovert's schedule",
+            "Sarcasm loading... please wait",
+            "I do all my own stunts, poorly",
+            "Currently unsupervised",
+            "This is my 'I tried' shirt",
+            "Chaos coordinator",
+            "Ask me about my terrible ideas",
+            "Trust me, I'm probably wrong",
+            "Yes I'm awkward, no I don't care",
+            "Snacks before responsibilities",
+            "My brain has too many tabs open",
+            "Not a morning person, or an afternoon one",
+            "Certified couch potato in training",
+            "I run on 90% snacks, 10% regret",
+            "Living the dream, mostly napping",
+            "Too glam to give a damn",
+            "Dodging responsibilities like a pro",
+            "Expert level googler",
+            "Best mistake since sliced bread",
+            "I'm on a seafood diet, I see food and eat it"
+        ];
+
+        const sayingEl = document.getElementById('saying');
+        const btn = document.getElementById('generate-btn');
+        let lastIndex = -1;
+
+        function generateSaying() {
+            let index;
+            do {
+                index = Math.floor(Math.random() * sayings.length);
+            } while (index === lastIndex && sayings.length > 1);
+            lastIndex = index;
+
+            sayingEl.classList.remove('pop-in');
+            void sayingEl.offsetWidth;
+            sayingEl.textContent = sayings[index];
+            sayingEl.classList.add('pop-in');
+        }
+
+        btn.addEventListener('click', generateSaying);
+    </script>
+</body>
+
+</html>
