@@ -1,0 +1,72 @@
+{
+  "_comment": "Copy this to dashboard-data.json and fill in your own details. dashboard-data.json is gitignored on purpose — it holds personal mail, appointments and phone numbers, and this repository is public. The dashboard reloads it every 5 minutes when served over http(s).",
+
+  "owner": {
+    "name": "Your Name",
+    "email": "you@example.com"
+  },
+
+  "location": {
+    "name": "Your Town, ST",
+    "lat": 42.097,
+    "lon": -79.2353,
+    "timezone": "America/New_York"
+  },
+
+  "generatedFor": "2026-07-29",
+
+  "emails": [
+    {
+      "from": "Sender Name",
+      "address": "sender@example.com",
+      "subject": "Subject line shown on the card",
+      "preview": "First line of the message body.",
+      "time": "2026-07-29T13:20:00Z",
+      "unread": true,
+      "personal": true,
+      "flag": "security"
+    },
+    {
+      "from": "Another Sender",
+      "address": "hello@example.com",
+      "subject": "Anything with personal false is hidden behind the Personal filter",
+      "preview": "Newsletters and promotions go here.",
+      "time": "2026-07-29T11:05:00Z",
+      "unread": false,
+      "personal": false
+    }
+  ],
+
+  "_flags": "Optional per-message badge: security, money, family or local. Omit for none.",
+
+  "schedule": [
+    {
+      "title": "Today's first appointment",
+      "start": "2026-07-29T09:00:00-04:00",
+      "end": "2026-07-29T10:00:00-04:00",
+      "calendar": "Family"
+    },
+    {
+      "title": "Today's second appointment",
+      "start": "2026-07-29T15:10:00-04:00",
+      "end": "2026-07-29T16:10:00-04:00",
+      "calendar": "Work",
+      "location": "Optional location or phone number"
+    }
+  ],
+
+  "upcoming": [
+    {
+      "title": "Something later this week",
+      "start": "2026-07-31T14:00:00-04:00",
+      "end": "2026-07-31T15:00:00-04:00",
+      "calendar": "Work"
+    }
+  ],
+
+  "reminders": [
+    { "text": "A high priority reminder", "priority": "high", "done": false },
+    { "text": "A normal one", "priority": "normal", "done": false },
+    { "text": "Something that can wait", "priority": "low", "done": false }
+  ]
+}

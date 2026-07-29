@@ -4,12 +4,35 @@ import json
 import urllib.request
 import os
 
+import news_feed
+
 PORT = 3000
 DIRECTORY = "."
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=DIRECTORY, **kwargs)
+
+    def _send_json(self, payload, status=200):
+        body = json.dumps(payload).encode('utf-8')
+        self.send_response(status)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Content-Length', str(len(body)))
+        self.send_header('Cache-Control', 'no-store')
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_GET(self):
+        # Headlines for the morning dashboard. Fetched here rather than in the
+        # browser because news RSS feeds don't send CORS headers.
+        if self.path.split('?')[0] == '/api/news':
+            try:
+                self._send_json(news_feed.get_headlines())
+            except Exception as e:
+                print("Failed to load headlines:", e)
+                self._send_json({'status': 'error', 'message': str(e)}, status=502)
+            return
+        super().do_GET()
 
     def do_POST(self):
         if self.path == '/api/sync':
